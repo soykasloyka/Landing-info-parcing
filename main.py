@@ -15,3 +15,31 @@ headers = {
 
 
 def get_source_html(url):
+
+    driver = webdriver.Chrome(
+        executable_path="driver_path"
+    )
+    
+    driver.maximize_window()
+    
+    try:
+        driver.get(url=url)
+        time.sleep(3)
+        
+        while True:
+            find_more_element = driver.find_element_by_class_name("catalog-button-showMore")
+            
+            if driver.find_elements_by_class_name("hasmore-text"):
+                with open("lesson12/source-page.html", "w") as file:
+                    file.write(driver.page_source)
+                    
+                break
+            else:
+                actions = ActionChains(driver)
+                actions.move_to_element(find_more_element).perform()
+                time.sleep(3)
+    except Exception as _ex:
+        print(_ex)
+    finally:
+        driver.close()
+        driver.quit()
