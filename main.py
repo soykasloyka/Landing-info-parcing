@@ -43,3 +43,22 @@ def get_source_html(url):
     finally:
         driver.close()
         driver.quit()
+
+
+def get_items_urls(file_path):
+    with open(file_path) as file:
+        src = file.read()
+        
+    soup = BeautifulSoup(src, "lxml")
+    items_divs = soup.find_all("div", class_="service-description")
+    
+    urls = []
+    for item in items_divs:
+        item_url = item.find("div", class_="H3").find("a").get("href")
+        urls.append(item_url)
+        
+    with open("lesson12/items_urls2.txt", "w") as file:
+        for url in urls:
+            file.write(f"{url}\n")
+            
+    return "[INFO] Urls collected successfully!"
