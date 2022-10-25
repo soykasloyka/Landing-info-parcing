@@ -107,3 +107,48 @@ def get_items_urls(file_path):
             item_site = soup.find(text=re.compile("Сайт|Официальный сайт")).find_next().text.strip()
         except Exception as _ex:
             item_site = None
+
+        social_networks_list = []
+        try:
+            item_social_networks = soup.find(text=re.compile("Страница в соцсетях")).find_next().find_all("a")
+            for sn in item_social_networks:
+                sn_url = sn.get("href")
+                sn_url = unquote(sn_url.split("?to=")[1].split("&")[0])
+                social_networks_list.append(sn_url)
+        except Exception as _ex:
+            social_networks_list = None
+            
+        result_list.append(
+            {
+                "item_name": item_name,
+                "item_url": url,
+                "item_phones_list": item_phones_list,
+                "item_address": item_address,
+                "item_site": item_site,
+                "social_networks_list": social_networks_list
+            }
+        )
+        
+        time.sleep(random.randrange(2, 5))
+        
+        if count%10 == 0:
+            time.sleep(random.randrange(5, 9))
+            
+        print(f"[+] Processed: {count}/{urls_count}")
+            
+        count += 1
+        
+    with open("lesson12/result.json", "w") as file:
+        json.dump(result_list, file, indent=4, ensure_ascii=False)
+        
+    return "[INFO] Data collected successfully!"
+        
+
+def main():
+    get_source_html(url="https://spb.zoon.ru/medical/?search_query_form=1&m%5B5200e522a0f302f066000055%5D=1&center%5B%5D=59.91878264665887&center%5B%5D=30.342586983263384&zoom=10")
+    # print(get_items_urls(file_path="file_path"))
+    # print(get_data(file_path="file_path"))
+    
+    
+if __name__ == "__main__":
+    main()
