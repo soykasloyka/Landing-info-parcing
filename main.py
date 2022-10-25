@@ -65,7 +65,7 @@ def get_items_urls(file_path):
 
 
     def get_data(file_path):
-    with open(file_path) as file:
+        with open(file_path) as file:
         # urls_list = file.readlines()
         
         # clear_urls_list = []
@@ -74,7 +74,7 @@ def get_items_urls(file_path):
         #     clear_urls_list.append(url)
         # print(clear_urls_list)
         
-        urls_list = [url.strip() for url in file.readlines()]
+            urls_list = [url.strip() for url in file.readlines()]
         
     result_list = []
     urls_count = len(urls_list)
