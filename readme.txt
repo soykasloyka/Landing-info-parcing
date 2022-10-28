@@ -1,0 +1,1 @@
+Parcing script based on beautifulsoup
